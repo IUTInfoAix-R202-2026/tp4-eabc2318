@@ -37,6 +37,8 @@ public class FormulaireConnexionViewModel {
     // l'identifiant ET le mot de passe sont non vides.
     //
     // Astuce : validable.bind(identifiant.isNotEmpty().and(motDePasse.isNotEmpty()));
+
+    this.validable.bind(this.identifiant.isNotEmpty().and(this.motDePasse.isNotEmpty()));
   }
 
   public StringProperty identifiantProperty() {
@@ -63,9 +65,17 @@ public class FormulaireConnexionViewModel {
     // TODO exercice 3 : implémenter la commande de connexion.
     //
     // 1. Publier "Connexion en cours..." dans statut.
+    this.statut.set("Connexion en cours...");
     // 2. Demander au serviceAuth de connecter identifiant + motDePasse.
+    boolean success = this.serviceAuth.connecter(this.identifiant.get(), this.motDePasse.get());
+
     // 3. Selon le résultat, publier un message clair dans statut :
     //    - succès : "Bienvenue " + identifiant + " !"
     //    - échec  : "Identifiants incorrects. Vérifiez votre saisie."
+    if (success) {
+      this.statut.set("Bienvenue " + this.identifiant.get() + " !");
+    } else {
+      this.statut.set("Identifiants incorrects. Vérifiez votre saisie.");
+    }
   }
 }
